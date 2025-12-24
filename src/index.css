@@ -4,3 +4,39 @@
 * {
   font-family: "Inter", sans-serif;
 }
+
+.design {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.operations {
+  @apply bg-amber-50 text-amber-700;
+}
+
+.marketing {
+  @apply bg-green-50 text-green-700;
+}
+
+.creative {
+  @apply bg-purple-50 text-purple-700;
+}
+
+.development {
+  @apply bg-indigo-50 text-indigo-700;
+}
+
+.backend {
+  @apply bg-red-50 text-red-700;
+}
+
+.setup {
+  @apply bg-green-50 text-green-700;
+}
+
+.infrastructure {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.documentation {
+  @apply bg-cyan-50 text-cyan-700;
+}
