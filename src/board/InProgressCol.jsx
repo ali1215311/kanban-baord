@@ -11,7 +11,7 @@ const InProgressCol = () => {
           <div className="flex items-center gap-3">
             <h2 className="text-lg font-semibold text-gray-900">In Progress</h2>
             <span className="text-sm font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
-              3
+              {todos.length}
             </span>
           </div>
           <div className="ml-auto flex items-center gap-2">

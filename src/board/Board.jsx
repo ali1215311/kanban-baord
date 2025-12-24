@@ -1,15 +1,23 @@
-import DoneCol from "./DoneCol";
-import InProgressCol from "./InProgressCol";
-import ToDoCol from "./ToDoCol";
+import { useState } from "react";
+import { columns, getTasks } from "../data/taskData";
+import TaskCol from "./TaskCol";
 
 const Board = () => {
+  const [tasks, setTasks] = useState(getTasks());
+
   return (
     <>
       <div className="flex-1 p-4 sm:p-6 lg:p-8 min-h-0">
         <div className="flex flex-col gap-6 xl:flex-row h-full">
-          <ToDoCol />
-          <InProgressCol />
-          <DoneCol />
+          {columns.map((s) => (
+            <TaskCol
+              key={s.id}
+              colTitle={s.label}
+              todos={tasks.filter((t) => {
+                return t.status === s.id;
+              })}
+            />
+          ))}
         </div>
       </div>
     </>

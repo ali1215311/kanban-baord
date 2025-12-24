@@ -1,15 +1,12 @@
 import Card from "../components/Card";
-import { getTasks } from "../data/taskData";
 
-const ToDoCol = () => {
-  const data = getTasks();
-  const todos = data.filter((t) => t.status === "todo");
+const TaskCol = ({ colTitle, todos }) => {
   return (
     <>
       <div className="flex-1 flex flex-col min-w-0 w-full">
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-3">
-            <h2 className="text-lg font-semibold text-gray-900">To-do</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{colTitle}</h2>
             <span className="text-sm font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
               {todos.length}
             </span>
@@ -121,4 +118,4 @@ const ToDoCol = () => {
     </>
   );
 };
-export default ToDoCol;
+export default TaskCol;

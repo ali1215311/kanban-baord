@@ -35,7 +35,7 @@ const tasks = [
     id: crypto.randomUUID(),
     title: "Presentation",
     description: "Presentation Slide Design",
-    tag: "Development",
+    tag: "development",
     date: "Aug 30",
     status: "done",
   },
@@ -47,6 +47,7 @@ const tasks = [
     date: "Aug 29",
     status: "done",
   },
+
   {
     id: crypto.randomUUID(),
     title: "Documentation",
@@ -73,10 +74,20 @@ const tasks = [
   },
 ];
 
-const statuses = ["To-do", "Done", "In Progress"];
+// const statuses = {
+//   todo: "To-do",
+//   done: "Done",
+//   "in-progress": "In Progress",
+// };
+
+const columns = [
+  { id: "todo", label: "To-do" },
+  { id: "in-progress", label: "In Progress" },
+  { id: "done", label: "Done" },
+];
 
 const getTasks = () => {
   return tasks;
 };
 
-export { getTasks, statuses };
+export { columns, getTasks };
