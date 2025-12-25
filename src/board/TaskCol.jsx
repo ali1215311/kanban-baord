@@ -110,9 +110,13 @@ const TaskCol = ({ colTitle, todos }) => {
         </div>
 
         <div className="space-y-4 flex-1 overflow-visible lg:overflow-y-auto">
-          {todos.map((todo) => (
-            <Card key={todo.id} task={todo} />
-          ))}
+          {todos.length > 0 ? (
+            todos.map((todo) => <Card key={todo.id} task={todo} />)
+          ) : (
+            <p className="text-center font-semibold text-2xl text-gray-500">
+              No tasks {colTitle === "Done" ? "have been done yet" : colTitle}!
+            </p>
+          )}
         </div>
       </div>
     </>

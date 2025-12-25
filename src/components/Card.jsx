@@ -1,14 +1,33 @@
+import { useRef, useState } from "react";
+import { useClickOutside } from "../hooks/useClickOutside";
+import { formateDate } from "../utils/dateFormate";
 import CardAction from "./CardAction";
 
 const Card = ({ task }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuRef = useRef();
+
+  useClickOutside(menuRef, () => {
+    setIsMenuOpen(false);
+  });
+
   return (
     <>
-      <div
-        className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow relative"
-        data-card="wireframes"
-        data-column="todo"
-      >
-        <CardAction />
+      <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow relative">
+        <div className="absolute top-4 right-4 text-gray-500" ref={menuRef}>
+          <button
+            type="button"
+            className="p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 3a1.25 1.25 0 110-2.5A1.25 1.25 0 018 3zm0 6.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm0 6.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z" />
+            </svg>
+          </button>
+          {isMenuOpen && <CardAction status={task.status} task={task} />}
+        </div>
+
         <div className="mb-3">
           <h3 className="font-semibold text-gray-900 text-sm">{task.title}</h3>
         </div>
@@ -34,7 +53,7 @@ const Card = ({ task }) => {
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             ></path>
           </svg>
-          {task.date}
+          {formateDate(task.date)}
         </div>
       </div>
     </>

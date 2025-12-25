@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { ShowModal } from "../contexts";
 import AddTaskModal from "./AddTaskModal";
 
 const Header = () => {
-  const [showModal, setShowModal] = useState(false);
+  const { showModal, setShowModal } = useContext(ShowModal);
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
   return (
     <>
-      {showModal && <AddTaskModal onClose={closeModal} />}
+      {showModal.isOpen && (
+        <AddTaskModal
+          onClose={() => setShowModal({ ...showModal, isOpen: false })}
+        />
+      )}
       <div className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
@@ -42,7 +44,9 @@ const Header = () => {
             </div>
             <button
               className="px-4 py-2 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer"
-              onClick={() => setShowModal(true)}
+              onClick={() =>
+                setShowModal({ ...showModal, isOpen: true, isEditing: false })
+              }
             >
               + Add Task
             </button>

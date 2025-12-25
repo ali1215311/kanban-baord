@@ -1,6 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ShowModal, TaskContext } from "../contexts";
 
 const AddTaskModal = ({ onClose }) => {
+  const { tasks, setTasks } = useContext(TaskContext);
+  const { showModal } = useContext(ShowModal);
+  let editing = showModal.isEditing;
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    tag: "design",
+    date: "",
+    status: "todo",
+  });
+
   const modalRef = useRef();
 
   const handleBackDropClick = (e) => {
@@ -17,6 +29,30 @@ const AddTaskModal = ({ onClose }) => {
 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newTask = {
+      id: crypto.randomUUID(),
+      ...formData,
+    };
+    setTasks([...tasks, newTask]);
+    setFormData({
+      title: "",
+      description: "",
+      tag: "",
+      date: "",
+      status: "",
+    });
+    console.log(tasks);
+
+    onClose();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <>
@@ -39,8 +75,8 @@ const AddTaskModal = ({ onClose }) => {
                   viewBox="0 0 24 24"
                 >
                   <path
-                    strokiLinecap="round"
-                    strokiLinejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M15.75 19.5L8.25 12l7.5-7.5"
                   ></path>
                 </svg>
@@ -48,20 +84,22 @@ const AddTaskModal = ({ onClose }) => {
               </button>
 
               <h1 className="text-3xl font-bold text-gray-900 mt-8">
-                Add Task
+                {editing ? "Edit Task" : "Add Task"}
               </h1>
               <p className="text-sm text-white">
-                Create a card for your board.
+                {editing
+                  ? "Edit your created task"
+                  : "Create a card for your board."}
               </p>
             </div>
           </div>
 
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 sm:p-8">
-            <form className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
-                    for="title"
+                    htmlFor="title"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Task Title
@@ -73,12 +111,13 @@ const AddTaskModal = ({ onClose }) => {
                     placeholder="e.g. Wireframes"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none"
                     required
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div>
                   <label
-                    for="description"
+                    htmlFor="description"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Task Subtitle / Description
@@ -88,6 +127,7 @@ const AddTaskModal = ({ onClose }) => {
                     name="description"
                     placeholder="Add context or acceptance criteria"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -95,7 +135,7 @@ const AddTaskModal = ({ onClose }) => {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <label
-                    for="tag"
+                    htmlFor="tag"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Tag
@@ -104,6 +144,9 @@ const AddTaskModal = ({ onClose }) => {
                     id="tag"
                     name="tag"
                     className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+                    onChange={handleChange}
+                    required
+                    defaultValue={"design"}
                   >
                     <option value="design">Design</option>
                     <option value="operations">Operations</option>
@@ -119,7 +162,7 @@ const AddTaskModal = ({ onClose }) => {
 
                 <div>
                   <label
-                    for="date"
+                    htmlFor="date"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Due Date
@@ -129,12 +172,14 @@ const AddTaskModal = ({ onClose }) => {
                     id="date"
                     name="date"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+                    onChange={handleChange}
+                    required
                   />
                 </div>
 
                 <div>
                   <label
-                    for="status"
+                    htmlFor="status"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Status
@@ -143,6 +188,7 @@ const AddTaskModal = ({ onClose }) => {
                     id="status"
                     name="status"
                     className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+                    onChange={handleChange}
                   >
                     <option value="todo">To-do</option>
                     <option value="in-progress">In Progress</option>
@@ -162,7 +208,7 @@ const AddTaskModal = ({ onClose }) => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-xl bg-gray-900 px-6 py-3 text-sm font-semibold text-white hover:bg-gray-800"
                 >
-                  Add Task
+                  {editing ? "Save" : "Add Task"}
                 </button>
               </div>
             </form>

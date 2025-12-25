@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { columns, getTasks } from "../data/taskData";
+import { useContext } from "react";
+import { TaskContext } from "../contexts";
+import { columns } from "../data/taskData";
 import TaskCol from "./TaskCol";
 
 const Board = () => {
-  const [tasks, setTasks] = useState(getTasks());
+  const { tasks } = useContext(TaskContext);
 
   return (
     <>
