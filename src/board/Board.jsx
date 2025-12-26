@@ -14,7 +14,7 @@ const Board = () => {
             <TaskCol
               key={s.id}
               colTitle={s.label}
-              todos={tasks.filter((t) => {
+              tasks={tasks.filter((t) => {
                 return t.status === s.id;
               })}
             />

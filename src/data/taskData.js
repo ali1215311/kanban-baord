@@ -86,8 +86,20 @@ const columns = [
   { id: "done", label: "Done" },
 ];
 
+const allTags = [
+  "design",
+  "operations",
+  "marketing",
+  "setup",
+  "infrastructure",
+  "documentation",
+  "creative",
+  "development",
+  "backend",
+];
+
 const getTasks = () => {
   return tasks;
 };
 
-export { columns, getTasks };
+export { allTags, columns, getTasks };
