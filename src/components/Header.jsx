@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { FormData, ShowModal } from "../contexts";
+import { FormData, SearchContext, ShowModal } from "../contexts";
 import AddTaskModal from "./AddTaskModal";
 
 const Header = () => {
+  const { searchText, setSearchText } = useContext(SearchContext);
+
   const { showModal, setShowModal } = useContext(ShowModal);
   const { setFormData } = useContext(FormData);
 
@@ -50,6 +52,8 @@ const Header = () => {
                 id="card-search"
                 placeholder="Search tasks"
                 className="w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
             <button

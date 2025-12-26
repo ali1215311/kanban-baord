@@ -18,7 +18,6 @@ const CardAction = ({ status, task }) => {
       }
     });
     setTasks(updatedTaskList);
-    console.log(updatedTask, updatedTaskList, action, t);
   };
 
   const handleDeleteTask = (id) => {

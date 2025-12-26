@@ -2,7 +2,7 @@ import { useState } from "react";
 import Card from "../components/Card";
 import SortFilter from "./SortFilter";
 
-const TaskCol = ({ colTitle, tasks }) => {
+const TaskCol = ({ colTitle, tasks, searchRes }) => {
   const [filterTag, setFilterTag] = useState(null);
   const [sortOpt, setSortOpt] = useState(null);
   const [options, setOptions] = useState(null);
@@ -60,7 +60,11 @@ const TaskCol = ({ colTitle, tasks }) => {
             filteredTasks.map((task) => <Card key={task.id} task={task} />)
           ) : (
             <p className="text-center font-semibold text-2xl text-gray-500">
-              No tasks {colTitle === "Done" ? "have been done yet" : colTitle}!
+              {searchRes
+                ? `No tasks found!`
+                : `No tasks ${
+                    colTitle === "Done" ? "have been done yet" : colTitle
+                  }!`}
             </p>
           )}
         </div>
