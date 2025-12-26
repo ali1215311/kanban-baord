@@ -1,15 +1,25 @@
 import { useContext } from "react";
-import { ShowModal } from "../contexts";
+import { FormData, ShowModal } from "../contexts";
 import AddTaskModal from "./AddTaskModal";
 
 const Header = () => {
   const { showModal, setShowModal } = useContext(ShowModal);
+  const { setFormData } = useContext(FormData);
 
   return (
     <>
       {showModal.isOpen && (
         <AddTaskModal
-          onClose={() => setShowModal({ ...showModal, isOpen: false })}
+          onClose={() => {
+            setShowModal({ ...showModal, isOpen: false });
+            setFormData({
+              title: "",
+              description: "",
+              tag: "design",
+              date: "",
+              status: "todo",
+            });
+          }}
         />
       )}
       <div className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">

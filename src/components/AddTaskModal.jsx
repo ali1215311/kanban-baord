@@ -1,17 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ShowModal, TaskContext } from "../contexts";
+import { useContext, useEffect, useRef } from "react";
+import { FormData, ShowModal, TaskContext } from "../contexts";
 
 const AddTaskModal = ({ onClose }) => {
   const { tasks, setTasks } = useContext(TaskContext);
   const { showModal } = useContext(ShowModal);
+  const { formData, setFormData } = useContext(FormData);
+
   let editing = showModal.isEditing;
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    tag: "design",
-    date: "",
-    status: "todo",
-  });
 
   const modalRef = useRef();
 
@@ -32,20 +27,23 @@ const AddTaskModal = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTask = {
-      id: crypto.randomUUID(),
-      ...formData,
-    };
-    setTasks([...tasks, newTask]);
-    setFormData({
-      title: "",
-      description: "",
-      tag: "",
-      date: "",
-      status: "",
-    });
-    console.log(tasks);
-
+    if (editing) {
+      let editedTask = formData;
+      let updatedTasks = tasks.map((t) => {
+        if (t.id === editedTask.id) {
+          return editedTask;
+        } else {
+          return t;
+        }
+      });
+      setTasks(updatedTasks);
+    } else {
+      const newTask = {
+        id: crypto.randomUUID(),
+        ...formData,
+      };
+      setTasks([...tasks, newTask]);
+    }
     onClose();
   };
 
@@ -111,6 +109,7 @@ const AddTaskModal = ({ onClose }) => {
                     placeholder="e.g. Wireframes"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none"
                     required
+                    value={formData.title}
                     onChange={handleChange}
                   />
                 </div>
@@ -127,6 +126,7 @@ const AddTaskModal = ({ onClose }) => {
                     name="description"
                     placeholder="Add context or acceptance criteria"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none"
+                    value={formData.description}
                     onChange={handleChange}
                   />
                 </div>
@@ -146,7 +146,7 @@ const AddTaskModal = ({ onClose }) => {
                     className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
                     onChange={handleChange}
                     required
-                    defaultValue={"design"}
+                    value={formData.tag}
                   >
                     <option value="design">Design</option>
                     <option value="operations">Operations</option>
@@ -173,6 +173,7 @@ const AddTaskModal = ({ onClose }) => {
                     name="date"
                     className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
                     onChange={handleChange}
+                    value={formData.date}
                     required
                   />
                 </div>
@@ -188,6 +189,7 @@ const AddTaskModal = ({ onClose }) => {
                     id="status"
                     name="status"
                     className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+                    value={formData.status}
                     onChange={handleChange}
                   >
                     <option value="todo">To-do</option>

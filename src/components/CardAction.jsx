@@ -1,14 +1,14 @@
 import { useContext } from "react";
-import { ShowModal, TaskContext } from "../contexts";
+import { FormData, ShowModal, TaskContext } from "../contexts";
 import { columns } from "../data/taskData";
 
 const CardAction = ({ status, task }) => {
   const { tasks, setTasks } = useContext(TaskContext);
   const { setShowModal } = useContext(ShowModal);
+  const { formData, setFormData } = useContext(FormData);
   const moveTo = columns.filter((c) => c.id !== status);
 
-  const handleMove = (e, action, t) => {
-    e.stopPropagation();
+  const handleMove = (action, t) => {
     const updatedTask = { ...t, status: action };
     const updatedTaskList = tasks.map((main) => {
       if (main.id === t.id) {
@@ -21,8 +21,7 @@ const CardAction = ({ status, task }) => {
     console.log(updatedTask, updatedTaskList, action, t);
   };
 
-  const handleDeleteTask = (e, id) => {
-    e.stopPropagation();
+  const handleDeleteTask = (id) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
@@ -37,7 +36,7 @@ const CardAction = ({ status, task }) => {
             type="button"
             className="w-full text-left px-4 py-2 hover:bg-gray-50"
             key={item.id}
-            onMouseDown={(e) => handleMove(e, item.id, task)}
+            onMouseDown={() => handleMove(item.id, task)}
           >
             {item.label}
           </button>
@@ -47,16 +46,21 @@ const CardAction = ({ status, task }) => {
           <button
             type="button"
             className="w-full text-left px-4 py-2 hover:bg-gray-50"
-            onMouseDown={() =>
-              setShowModal({ ...setShowModal, isOpen: true, isEditing: true })
-            }
+            onMouseDown={() => {
+              setShowModal({
+                ...setShowModal,
+                isOpen: true,
+                isEditing: true,
+              });
+              setFormData({ ...formData, ...task });
+            }}
           >
             Edit Card
           </button>
           <button
             type="button"
             className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50"
-            onMouseDown={(e) => handleDeleteTask(e, task.id)}
+            onMouseDown={() => handleDeleteTask(task.id)}
           >
             Delete Card
           </button>
